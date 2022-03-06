@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 export default class FilesUploadComponent extends Component {
   constructor(props) {
     super(props);
@@ -24,14 +26,16 @@ export default class FilesUploadComponent extends Component {
       )
       .then((res) => {
         console.log(res);
-        if (res.data && res.data.filename) {
-          axios.post(`${window.env.API_BASE_URL}/api/product/processCsvFile`, {
+        axios
+          .post(`${window.env.API_BASE_URL}/api/product/processCsvFile`, {
             csvFileName: res.data.filename,
-          }).then((res) => {
-            
-          });
-        }
-      });
+          })
+          .then((_) => {
+            toast.success("Your csv file was processed successfully!");
+          })
+          .catch((_) => toast.error("Your csv file is invalid"));
+      })
+      .catch(_ => toast.error("Something is wrong!"));
   }
 
   render() {
