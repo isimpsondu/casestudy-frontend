@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Stack, Button } from "@mui/material";
 
 export default class FilesUploadComponent extends Component {
   constructor(props) {
@@ -35,25 +36,24 @@ export default class FilesUploadComponent extends Component {
           })
           .catch((_) => toast.error("Your csv file is invalid"));
       })
-      .catch(_ => toast.error("Something is wrong!"));
+      .catch((_) => toast.error("Something is wrong!"));
   }
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <form onSubmit={this.onSubmit}>
-            <div className="form-group">
-              <input type="file" onChange={this.onFileChange} />
-            </div>
-            <div className="form-group">
-              <button className="btn btn-primary" type="submit">
-                Upload
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <form onSubmit={this.onSubmit}>
+        <Stack spacing={2}>
+          <input type="file" onChange={this.onFileChange} />
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={!this.state.csvFile}
+          >
+            Upload
+          </Button>
+        </Stack>
+      </form>
     );
   }
 }
